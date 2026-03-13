@@ -93,10 +93,10 @@ EOF
     if verificar_existencia_de_entorno; then
       if [[ -e ~/EPNro1/salida/$FILENAME ]]; then
         read -p "Ingrese su numero de padrón: " numPadron
-        if grep $numPadron ~/EPNro1/salida; then
+        if ! grep $numPadron ~/EPNro1/salida/$FILENAME; then
           echo "El numero de padrón $numPadron no se encuentra registrado"
         else
-          grep $numPadron ~/EPNro1/salida
+          grep $numPadron ~/EPNro1/salida/$FILENAME
         fi
       fi
     fi
