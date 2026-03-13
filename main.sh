@@ -159,8 +159,8 @@ EOF
             read -p "Ingrese su numero de padrón: " numPadron
             if ! grep $numPadron ~/EPNro1/salida/$FILENAME; then
               echo "El numero de padrón $numPadron no se encuentra registrado"
-              read -p "Presione enter para continuar"
             fi
+            read -p "Presione enter para continuar"
           fi
         fi
         ;;
