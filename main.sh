@@ -134,7 +134,7 @@ EOF
           chmod +x ~/EPNro1/consolidar.sh
           fi
           echo "Ejecutando de fondo el script consolidar.sh"
-          ~/EPNro1/consolidar.sh &
+          FILENAME=$FILENAME ~/EPNro1/consolidar.sh &
         fi
         ;;
       "3")
