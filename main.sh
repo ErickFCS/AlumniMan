@@ -60,8 +60,8 @@ EOF
 echo "Ejecución iniciada."
 
 for i in ~/EPNro1/entrada/*.txt; do
-  cat $i >> ~/EPNro1/salida/$FILENAME
-  mv $i ~/EPNro1/procesado/
+  cat "$i" >> ~/EPNro1/salida/$FILENAME
+  mv "$i" ~/EPNro1/procesado/
 done
 
 echo "Ejecución finalizada."
