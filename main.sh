@@ -83,16 +83,16 @@ EOF
       ;;
     "3")
       if verificar_existencia_de_entorno; then
-        if [[ -e ~/EPNro1/salida/$FILENAME ]]; then
+        if [[ -s ~/EPNro1/salida/$FILENAME ]]; then
           sort -h ~/EPNro1/salida/$FILENAME
         else
-          echo ""
+          echo "El archivo $FILENAME todavia no existe o esta vacio"
         fi
       fi
       ;;
     "4")
       if verificar_existencia_de_entorno; then
-        if [[ -e ~/EPNro1/salida/$FILENAME ]]; then
+        if [[ -s ~/EPNro1/salida/$FILENAME ]]; then
           sort --field-separator=" " --key=4n ~/EPNro1/salida/$FILENAME | head -n 10
         fi
       fi
