@@ -141,6 +141,7 @@ EOF
         if verificar_existencia_de_entorno; then
           if verificar_existencia_y_contenido_del_archivo_FILENAME; then
             sort -h ~/EPNro1/salida/$FILENAME
+            read -p "Presione enter para continuar"
           fi
         fi
         ;;
@@ -148,6 +149,7 @@ EOF
         if verificar_existencia_de_entorno; then
           if verificar_existencia_y_contenido_del_archivo_FILENAME; then
             sort --field-separator=" " --key=5,5n --reverse ~/EPNro1/salida/$FILENAME | head -n 10
+            read -p "Presione enter para continuar"
           fi
         fi
         ;;
@@ -157,6 +159,7 @@ EOF
             read -p "Ingrese su numero de padrón: " numPadron
             if ! grep $numPadron ~/EPNro1/salida/$FILENAME; then
               echo "El numero de padrón $numPadron no se encuentra registrado"
+              read -p "Presione enter para continuar"
             fi
           fi
         fi
