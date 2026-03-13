@@ -6,7 +6,7 @@ SALIENDO=false
 verificar_existencia_de_entorno() {
   if [[ !( -d ~/EPNro1 && -d ~/EPNro1/entrada && -d ~/EPNro1/salida && -d ~/EPNro1/procesado  ) ]]; then
     echo "Entorno corrupto o no iniciado. Intente correr primero la opción 1."
-    echo "Si el problema persiste contacte con sopote."
+    echo "Si el problema persiste contacte con soporte."
     return 1
   fi
 }
@@ -54,7 +54,7 @@ elif [[ $1 == "-d" ]]; then
   cat << EOF
 
 ¡ATENCION!
-Usted esta por eliminar todo el entorno creado por esta herramiente.
+Usted esta por eliminar todo el entorno creado por esta herramienta.
 Esto no tiene vuelta atras. Solo continue si entiende las implicaciones.
 
 EOF
@@ -94,7 +94,7 @@ Termina el programa dejando todo el entorno y datos como están.
 
 EOF
 
-    read -p "Numero de opción elegída: " opt
+    read -p "Numero de opción elegida: " opt
 
     echo "Opción $opt seleccionada."
 
@@ -111,8 +111,8 @@ EOF
       "2")
         if verificar_existencia_de_entorno; then
           if [[ ! -e ~/EPNro1/consolidar.sh ]]; then
-            echo "El script consolidar.sh no se encuentra en la carpera EPNro1"
-            echo "Creando script consolidar.sh"
+            echo "El script consolidar.sh no se encuentra en la carpeta EPNro1."
+            echo "Creando script consolidar.sh."
             cat > ~/EPNro1/consolidar.sh << \
 'EOF'
 #!/bin/bash
