@@ -80,9 +80,9 @@ EOF
       read -p "Ingrese su numero de padrón: " numPadron
       if grep $numPadron ~/EPNro1/salida; then
         echo "El numero de padrón $numPadron no se encuentra registrado"
-        ;;
+      else
+        grep $numPadron ~/EPNro1/salida
       fi
-      grep $numPadron ~/EPNro1/salida
     fi
     ;;
   "6")
