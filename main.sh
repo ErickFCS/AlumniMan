@@ -58,7 +58,7 @@ Usted esta por eliminar todo el entorno creado por esta herramiente.
 Esto no tiene vuelta atras. Solo continue si entiende las implicaciones.
 
 EOF
-  read -p "Desea continuar? Solo\"si\" sera aceptado como afirmativo: " confirma
+  read -p "Desea continuar? Solo \"si\" sera aceptado como afirmativo: " confirma
   if [[ $confirma == "si" ]]; then
     rm -fr ~/EPNro1/
     echo "El entorno fue eliminado."
