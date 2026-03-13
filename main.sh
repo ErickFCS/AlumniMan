@@ -11,11 +11,67 @@ verificar_existencia_de_entorno() {
   fi
 }
 
-echo "Bienvenido al programa de del TP0 de introduccion al desarrollo de software"
+verificar_existencia_y_contenido_del_archivo_FILENAME() {
+  if [[ ! -s ~/EPNro1/salida/$FILENAME ]]; then
+    echo "El archivo $FILENAME todavia no existe o esta vacio"
+    return 1
+  fi
+}
 
-while [[ $SALIENDO == false ]]; do
-
+if [[ $1 == "-h" || $1 == "--help"]]; then
   cat << \
+EOF
+erick@desktop:~/Downloads/TP0$ busybox --help
+AlumniMan, made for Bash compliant shells.
+AlumniMan is copyrighted by ErickFCS.
+Licensed under BSD-3. See source distribution for detailed.
+copyright notices.
+
+Usage: AlumniMan [-d] [-h | --help]
+        
+        AlumniMan es un script que organiza el listado de alumnos a 
+        partir de un conjunto de archivos .txt en la carpeta entrada.
+        Combinandolos en un archivo nombrado en base a la variable
+        FILENAME. Permite buscar y listar a los alumnos.
+        Los archivos base tienen que tener en la siguiente forma:
+          Legajo Nombre Apellido Email Nota
+        Ej:
+          122332 Juan Lopez jlopez@fi.uba.ar 8
+          100998 Pedro Valdéz pvaldez@fi.uba.ar 5
+          89032 Carla Simone csimone@fi.uba.ar 7
+          77542 Franco Lomba flomba@fi.uba.ar 10
+          100223 Juana Pola jpola@fi.uba.ar 4
+          122435 Lucia Fernandez lfernandez@fi.uba.ar 9
+
+Flags:
+        -d          Borrará todo el entorno creado en la carpeta EPNro1
+                    y se matarán los procesos creados en background.
+        -h, --help  Muestra este mensaje y termina.
+EOF
+
+
+elif [[ $1 == "-d" ]]; then
+  cat << EOF
+
+¡ATENCION!
+Usted esta por eliminar todo el entorno creado por esta herramiente.
+Esto no tiene vuelta atras. Solo continue si entiende las implicaciones.
+
+EOF
+  read -p "Desea continuar? Solo\"si\" sera aceptado como afirmativo: " confirma
+  if [[ $confirma == "si" ]]; then
+    rm -fr ~/EPNro1/
+    echo "El entorno fue eliminado."
+    pkill -f consolidar.sh
+    echo "Los procesos fueron terminados."
+  else
+    echo "La operacion fue cancelada"
+  fi
+
+
+else
+  while [[ $SALIENDO == false ]]; do
+    cat << \
 EOF
 
 Opción 1) Crear entorno.
@@ -38,26 +94,26 @@ Termina el programa dejando todo el entorno y datos como están.
 
 EOF
 
-  read -p "Numero de opción elegída: " opt
+    read -p "Numero de opción elegída: " opt
 
-  echo "Opción $opt seleccionada."
+    echo "Opción $opt seleccionada."
 
-  case "$opt" in
-    "1")
-      echo "Creando la carpeta EPNro1 si no existe"
-      echo "Creando la carpeta entrada si no existe"
-      mkdir -p ~/EPNro1/entrada
-      echo "Creando la carpeta salida si no existe"
-      mkdir -p ~/EPNro1/salida
-      echo "Creando la carpeta procesado si no existe"
-      mkdir -p ~/EPNro1/procesado
-      ;;
-    "2")
-      if verificar_existencia_de_entorno; then
-        if [[ ! -e ~/EPNro1/consolidar.sh ]]; then
-          echo "El script consolidar.sh no se encuentra en la carpera EPNro1"
-          echo "Creando script consolidar.sh"
-          cat > ~/EPNro1/consolidar.sh << \
+    case "$opt" in
+      "1")
+        echo "Creando la carpeta EPNro1 si no existe"
+        echo "Creando la carpeta entrada si no existe"
+        mkdir -p ~/EPNro1/entrada
+        echo "Creando la carpeta salida si no existe"
+        mkdir -p ~/EPNro1/salida
+        echo "Creando la carpeta procesado si no existe"
+        mkdir -p ~/EPNro1/procesado
+        ;;
+      "2")
+        if verificar_existencia_de_entorno; then
+          if [[ ! -e ~/EPNro1/consolidar.sh ]]; then
+            echo "El script consolidar.sh no se encuentra en la carpera EPNro1"
+            echo "Creando script consolidar.sh"
+            cat > ~/EPNro1/consolidar.sh << \
 EOF
 #!/bin/bash
 
@@ -75,48 +131,46 @@ done
 echo "Ejecución finalizada."
 
 EOF
-        chmod +x ~/EPNro1/consolidar.sh
+          chmod +x ~/EPNro1/consolidar.sh
+          fi
+          echo "Ejecutando de fondo el script consolidar.sh"
+          ~/EPNro1/consolidar.sh &
         fi
-        echo "Ejecutando de fondo el script consolidar.sh"
-        ~/EPNro1/consolidar.sh &
-      fi
-      ;;
-    "3")
-      if verificar_existencia_de_entorno; then
-        if [[ -s ~/EPNro1/salida/$FILENAME ]]; then
-          sort -h ~/EPNro1/salida/$FILENAME
-        else
-          echo "El archivo $FILENAME todavia no existe o esta vacio"
-        fi
-      fi
-      ;;
-    "4")
-      if verificar_existencia_de_entorno; then
-        if [[ -s ~/EPNro1/salida/$FILENAME ]]; then
-          sort --field-separator=" " --key=4n ~/EPNro1/salida/$FILENAME | head -n 10
-        fi
-      fi
-      ;;
-    "5")
-      if verificar_existencia_de_entorno; then
-        if [[ -e ~/EPNro1/salida/$FILENAME ]]; then
-          read -p "Ingrese su numero de padrón: " numPadron
-          if ! grep $numPadron ~/EPNro1/salida/$FILENAME; then
-            echo "El numero de padrón $numPadron no se encuentra registrado"
-          else
-            grep $numPadron ~/EPNro1/salida/$FILENAME
+        ;;
+      "3")
+        if verificar_existencia_de_entorno; then
+          if verificar_existencia_y_contenido_del_archivo_FILENAME; then
+            sort -h ~/EPNro1/salida/$FILENAME
           fi
         fi
-      fi
-      ;;
-    "6")
-      echo "Saliendo"
-      SALIENDO=true
-      ;;
-    *)
-      echo "Opción invalida, revise su elección."
-      ;;
-  esac
+        ;;
+      "4")
+        if verificar_existencia_de_entorno; then
+          if verificar_existencia_y_contenido_del_archivo_FILENAME; then
+            sort --field-separator=" " --key=4n ~/EPNro1/salida/$FILENAME | head -n 10
+          fi
+        fi
+        ;;
+      "5")
+        if verificar_existencia_de_entorno; then
+          if verificar_existencia_y_contenido_del_archivo_FILENAME; then
+            read -p "Ingrese su numero de padrón: " numPadron
+            if ! grep $numPadron ~/EPNro1/salida/$FILENAME; then
+              echo "El numero de padrón $numPadron no se encuentra registrado"
+            else
+              grep $numPadron ~/EPNro1/salida/$FILENAME
+            fi
+          fi
+        fi
+        ;;
+      "6")
+        echo "Saliendo"
+        SALIENDO=true
+        ;;
+      *)
+        echo "Opción invalida, revise su elección."
+        ;;
+    esac
 
-done
-
+  done
+fi
