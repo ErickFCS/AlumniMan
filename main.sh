@@ -2,6 +2,14 @@
 
 FILENAME="numbredearchivo.txt"
 
+verificar_existencia_de_entorno() {
+  if [[ !( -d ~/EPNro1 && -d ~/EPNro1/entrada && -d ~/EPNro1/salida && -d ~/EPNro1/procesado  ) ]]; then
+    echo "Entorno corrupto o no iniciado. Intente correr primero la opción 1."
+    echo "Si el problema persiste contacte con sopote."
+    return 1
+  fi
+}
+
 cat << EOF
 
 Bienvenido al programa de del TP0 de introduccion al desarrollo de software
@@ -41,10 +49,11 @@ case "$opt" in
     mkdir -p ~/EPNro1/procesado
     ;;
   "2")
-    if [[ ! -e ~/EPNro1/consolidar.sh ]]; then
-      echo "El script consolidar.sh no se encuentra en la carpera EPNro1"
-      echo "Creando script consolidar.sh"
-      cat > ~/EPNro1/consolidar.sh << \
+    if verificar_existencia_de_entorno; then
+      if [[ ! -e ~/EPNro1/consolidar.sh ]]; then
+        echo "El script consolidar.sh no se encuentra en la carpera EPNro1"
+        echo "Creando script consolidar.sh"
+        cat > ~/EPNro1/consolidar.sh << \
 EOF
 #!/bin/bash
 
@@ -58,30 +67,37 @@ done
 echo "Ejecución finalizada."
 
 EOF
-    chmod +x ~/EPNro1/consolidar.sh
+      chmod +x ~/EPNro1/consolidar.sh
+      fi
+      echo "Ejecutando de fondo el script consolidar.sh"
+      ~/EPNro1/consolidar.sh &
     fi
-    echo "Ejecutando de fondo el script consolidar.sh"
-    ~/EPNro1/consolidar.sh &
     ;;
   "3")
-    if [[ -e ~/EPNro1/salida/$FILENAME ]]; then
-      sort -h ~/EPNro1/salida/$FILENAME
-    else
-      echo ""
+    if verificar_existencia_de_entorno; then
+      if [[ -e ~/EPNro1/salida/$FILENAME ]]; then
+        sort -h ~/EPNro1/salida/$FILENAME
+      else
+        echo ""
+      fi
     fi
     ;;
   "4")
-    if [[ -e ~/EPNro1/salida/$FILENAME ]]; then
-      sort --field-separator=" " --key=4n ~/EPNro1/salida/$FILENAME | head -c 10
+    if verificar_existencia_de_entorno; then
+      if [[ -e ~/EPNro1/salida/$FILENAME ]]; then
+        sort --field-separator=" " --key=4n ~/EPNro1/salida/$FILENAME | head -c 10
+      fi
     fi
     ;;
   "5")
-    if [[ -e ~/EPNro1/salida/$FILENAME ]]; then
-      read -p "Ingrese su numero de padrón: " numPadron
-      if grep $numPadron ~/EPNro1/salida; then
-        echo "El numero de padrón $numPadron no se encuentra registrado"
-      else
-        grep $numPadron ~/EPNro1/salida
+    if verificar_existencia_de_entorno; then
+      if [[ -e ~/EPNro1/salida/$FILENAME ]]; then
+        read -p "Ingrese su numero de padrón: " numPadron
+        if grep $numPadron ~/EPNro1/salida; then
+          echo "El numero de padrón $numPadron no se encuentra registrado"
+        else
+          grep $numPadron ~/EPNro1/salida
+        fi
       fi
     fi
     ;;
