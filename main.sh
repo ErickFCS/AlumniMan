@@ -85,7 +85,7 @@ EOF
   "4")
     if verificar_existencia_de_entorno; then
       if [[ -e ~/EPNro1/salida/$FILENAME ]]; then
-        sort --field-separator=" " --key=4n ~/EPNro1/salida/$FILENAME | head -c 10
+        sort --field-separator=" " --key=4n ~/EPNro1/salida/$FILENAME | head -n 10
       fi
     fi
     ;;
