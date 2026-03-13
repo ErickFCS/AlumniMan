@@ -114,7 +114,7 @@ EOF
             echo "El script consolidar.sh no se encuentra en la carpera EPNro1"
             echo "Creando script consolidar.sh"
             cat > ~/EPNro1/consolidar.sh << \
-EOF
+'EOF'
 #!/bin/bash
 
 echo "Ejecución iniciada."
