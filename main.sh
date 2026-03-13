@@ -18,7 +18,7 @@ verificar_existencia_y_contenido_del_archivo_FILENAME() {
   fi
 }
 
-if [[ $1 == "-h" || $1 == "--help"]]; then
+if [[ $1 == "-h" || $1 == "--help" ]]; then
   cat << \
 EOF
 erick@desktop:~/Downloads/TP0$ busybox --help
