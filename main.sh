@@ -13,7 +13,7 @@ verificar_existencia_de_entorno() {
 
 verificar_existencia_y_contenido_del_archivo_FILENAME() {
   if [[ ! -s ~/EPNro1/salida/$FILENAME ]]; then
-    echo "El archivo $FILENAME todavia no existe o esta vacio"
+    echo "El archivo $FILENAME todavia no existe o esta vacio."
     return 1
   fi
 }
@@ -65,7 +65,7 @@ EOF
     pkill -f consolidar.sh
     echo "Los procesos fueron terminados."
   else
-    echo "La operacion fue cancelada"
+    echo "La operacion fue cancelada."
   fi
 
 
@@ -100,12 +100,12 @@ EOF
 
     case "$opt" in
       "1")
-        echo "Creando la carpeta EPNro1 si no existe"
-        echo "Creando la carpeta entrada si no existe"
+        echo "Creando la carpeta EPNro1 si no existe."
+        echo "Creando la carpeta entrada si no existe."
         mkdir -p ~/EPNro1/entrada
-        echo "Creando la carpeta salida si no existe"
+        echo "Creando la carpeta salida si no existe."
         mkdir -p ~/EPNro1/salida
-        echo "Creando la carpeta procesado si no existe"
+        echo "Creando la carpeta procesado si no existe."
         mkdir -p ~/EPNro1/procesado
         ;;
       "2")
@@ -124,7 +124,7 @@ for i in ~/EPNro1/entrada/*.txt; do
     cat "$i" >> ~/EPNro1/salida/$FILENAME
     mv "$i" ~/EPNro1/procesado/
   else
-    echo "No hay archivos que procesar"
+    echo "No hay archivos que procesar."
   fi
 done
 
@@ -133,7 +133,7 @@ echo "Ejecución finalizada."
 EOF
           chmod +x ~/EPNro1/consolidar.sh
           fi
-          echo "Ejecutando de fondo el script consolidar.sh"
+          echo "Ejecutando de fondo el script consolidar.sh."
           FILENAME=$FILENAME ~/EPNro1/consolidar.sh &
         fi
         ;;
@@ -141,7 +141,7 @@ EOF
         if verificar_existencia_de_entorno; then
           if verificar_existencia_y_contenido_del_archivo_FILENAME; then
             sort -h ~/EPNro1/salida/$FILENAME
-            read -p "Presione enter para continuar"
+            read -p "Presione enter para continuar."
           fi
         fi
         ;;
@@ -149,7 +149,7 @@ EOF
         if verificar_existencia_de_entorno; then
           if verificar_existencia_y_contenido_del_archivo_FILENAME; then
             sort --field-separator=" " --key=5,5n --reverse ~/EPNro1/salida/$FILENAME | head -n 10
-            read -p "Presione enter para continuar"
+            read -p "Presione enter para continuar."
           fi
         fi
         ;;
@@ -160,14 +160,14 @@ EOF
             if [[ -z "$numPadron" ]]; then
               echo "No se ingreso ningún dato."
             elif ! grep "^$numPadron " ~/EPNro1/salida/$FILENAME; then
-              echo "El numero de padrón $numPadron no se encuentra registrado"
+              echo "El numero de padrón $numPadron no se encuentra registrado."
             fi
-            read -p "Presione enter para continuar"
+            read -p "Presione enter para continuar."
           fi
         fi
         ;;
       "6")
-        echo "Saliendo"
+        echo "Saliendo."
         SALIENDO=true
         ;;
       *)
