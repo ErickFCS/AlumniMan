@@ -57,22 +57,22 @@ MENSAJE_ATENCION_ELIMINACION_DE_ENTORNO='
 
 MENSAJE_MENU='
   Opción 1) Crear entorno.
-  Crea un directorio en el "home" de tu usuario llamado "EPNro1". Y dentro de este tres carpetas, una llamada "entrada", otra llamada "salida", y otra llamada "procesado".
+    Crea un directorio en el "home" de tu usuario llamado "EPNro1". Y dentro de este tres carpetas, una llamada "entrada", otra llamada "salida", y otra llamada "procesado".
 
   Opción 2) Correr proceso.
-  Inicia un proceso de fondo que toma cada archivo en la carpeta "entrada", adjunta sus contenidos al archivo $FILENAME, y lo mueve a la carpeta "procesado".
+    Inicia un proceso de fondo que toma cada archivo en la carpeta "entrada", adjunta sus contenidos al archivo $FILENAME, y lo mueve a la carpeta "procesado".
 
   Opción 3) Listar Alumnos.
-  Muestra el listado de alumnos ordenados por número de padrón.
+    Muestra el listado de alumnos ordenados por número de padrón.
 
   Opción 4) Listar Notas más altas.
-  Muestra el listado de los 10 alumnos con las notas más altas.
+    Muestra el listado de los 10 alumnos con las notas más altas.
 
   Opción 5) Buscar por padrón.
-  Busca los datos de un alumno por número de padrón.
+    Busca los datos de un alumno por número de padrón.
 
   Opción 6) Salir.
-  Termina el programa dejando todo el entorno y datos como están.
+    Termina el programa dejando todo el entorno y datos como están.
 '
 
 success() {
@@ -164,10 +164,10 @@ case "$1" in
     echo ""
 
     if [[ $confirma == "si" ]]; then
+      CANTIDAD_DE_PROCESOS=$(pkill -c -f consolidar.sh)
+      success "Los $CANTIDAD_DE_PROCESOS procesos que habían fueron terminados."
       rm -fr $HOME/EPNro1/
       success "El entorno fue eliminado."
-      pkill -f consolidar.sh
-      success "Los procesos fueron terminados."
 
     else
       warn "La operacion fue cancelada."
@@ -176,6 +176,9 @@ case "$1" in
   *)
     while [[ $SALIENDO == false ]]; do
       echo "$MENSAJE_MENU"
+      CANTIDAD_DE_PROCESOS=$(($(ps aux | grep "consolidar.sh" | wc -l) - 1))
+      success "Hay $CANTIDAD_DE_PROCESOS procesos activos"
+      echo ""
       read -p "Numero de opción elegida: " opt
 
       echo ""
