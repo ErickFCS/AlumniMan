@@ -136,6 +136,7 @@ case "$1" in
   "-d" | "--destroy")
     echo "$MENSAJE_ATENCION_ELIMINACION_DE_ENTORNO"
     read -p "Desea continuar? Solo \"si\" sera aceptado como afirmativo: " confirma
+    echo ""
 
     if [[ $confirma == "si" ]]; then
       rm -fr $HOME/EPNro1/
@@ -152,7 +153,9 @@ case "$1" in
       echo "$MENSAJE_MENU"
       read -p "Numero de opción elegida: " opt
 
+      echo ""
       echo "Opción $opt seleccionada."
+      echo ""
 
       case "$opt" in
         "1")
@@ -168,6 +171,7 @@ case "$1" in
             FILENAME_existe_y_no_esta_vacio; then
             listar_alumnos
           fi
+          echo ""
           read -p "Presione enter para continuar."
           ;;
         "4")
@@ -175,6 +179,7 @@ case "$1" in
             FILENAME_existe_y_no_esta_vacio; then
             listar_alumnos_con_notas_mas_altas
           fi
+          echo ""
           read -p "Presione enter para continuar."
           ;;
         "5")
@@ -183,6 +188,7 @@ case "$1" in
             read -p "Ingrese su numero de padrón: " numPadron
             buscar_por_padron $numPadron
           fi
+          echo ""
           read -p "Presione enter para continuar."
           ;;
         "6")
