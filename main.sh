@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILENAME="numbredearchivo.txt"
+FILENAME=${$FILENAME:-"numbredearchivo.txt"}
 SALIENDO=false
 
 verificar_existencia_de_entorno() {
