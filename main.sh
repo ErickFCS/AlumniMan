@@ -75,10 +75,28 @@ MENSAJE_MENU='
   Termina el programa dejando todo el entorno y datos como están.
 '
 
+success() {
+  # \x1b[92m es el código ansii para el color VERDE claro.
+  # \x1b[0m es el código ansii para volver al default.
+  echo -e "\x1b[92m$1\x1b[0m"
+}
+
+warn() {
+  # \x1b[93m es el código ansii para el color AMARILLO claro.
+  # \x1b[0m es el código ansii para volver al default.
+  echo -e "\x1b[93m$1\x1b[0m"
+}
+
+error() {
+  # \x1b[91m es el código ansii para el color ROJO claro.
+  # \x1b[0m es el código ansii para volver al default.
+  echo -e "\x1b[91m$1\x1b[0m"
+}
+
 entorno_existe() {
   if [[ !( -d $HOME/EPNro1 && -d $HOME/EPNro1/entrada && -d $HOME/EPNro1/salida && -d $HOME/EPNro1/procesado  ) ]]; then
-    echo "Entorno corrupto o no iniciado. Intente correr primero la opción 1."
-    echo "Si el problema persiste contacte con soporte."
+    error "Entorno corrupto o no iniciado. Intente correr primero la opción 1."
+    warn "Si el problema persiste contacte con soporte."
     return 1
   fi
   return 0
@@ -86,7 +104,11 @@ entorno_existe() {
 
 FILENAME_existe_y_no_esta_vacio() {
   if [[ ! -s $HOME/EPNro1/salida/$FILENAME ]]; then
-    echo "El archivo $FILENAME todavia no existe o esta vacio."
+    error "El archivo $FILENAME todavia no existe o esta vacio."
+    warn 'Asegurece de:
+    haber creado el entorno con la opción 1
+    haber agregado archivos a la carpeta entrada y luego haberlos procesados con la opción 2'
+    warn "En caso de que el problema persista, contacte con soporte."
     return 1
   fi
   return 0
@@ -100,14 +122,17 @@ crear_entorno() {
   mkdir -p $HOME/EPNro1/salida
   echo "Creando la carpeta procesado si no existe."
   mkdir -p $HOME/EPNro1/procesado
+  echo ""
+  success "El entorno fue creado."
 }
 
 correr_proceso() {
   if [[ ! -e $HOME/EPNro1/consolidar.sh ]]; then
-    echo "El script consolidar.sh no se encuentra en la carpeta EPNro1."
+    warn "El script consolidar.sh no se encuentra en la carpeta EPNro1."
     echo "Creando script consolidar.sh."
     echo "$CONSOLIDAR_SH" > $HOME/EPNro1/consolidar.sh
     chmod +x $HOME/EPNro1/consolidar.sh
+    success "Script consolidar.sh creado"
   fi
   echo "Ejecutando de fondo el script consolidar.sh."
   FILENAME=$FILENAME $HOME/EPNro1/consolidar.sh &
@@ -123,9 +148,9 @@ listar_alumnos_con_notas_mas_altas() {
 
 buscar_por_padron() {
   if [[ -z "$numPadron" ]]; then
-    echo "No se ingreso ningún dato."
+    error "No se ingreso ningún dato."
   elif ! grep "^$numPadron " $HOME/EPNro1/salida/$FILENAME; then
-    echo "El numero de padrón $numPadron no se encuentra registrado."
+    error "El numero de padrón $numPadron no se encuentra registrado."
   fi
 }
 
@@ -134,18 +159,18 @@ case "$1" in
     echo "$MENSAJE_HELP"
     ;;
   "-d" | "--destroy")
-    echo "$MENSAJE_ATENCION_ELIMINACION_DE_ENTORNO"
+    warn "$MENSAJE_ATENCION_ELIMINACION_DE_ENTORNO"
     read -p "Desea continuar? Solo \"si\" sera aceptado como afirmativo: " confirma
     echo ""
 
     if [[ $confirma == "si" ]]; then
       rm -fr $HOME/EPNro1/
-      echo "El entorno fue eliminado."
+      success "El entorno fue eliminado."
       pkill -f consolidar.sh
-      echo "Los procesos fueron terminados."
+      success "Los procesos fueron terminados."
 
     else
-      echo "La operacion fue cancelada."
+      warn "La operacion fue cancelada."
     fi
     ;;
   *)
@@ -196,7 +221,7 @@ case "$1" in
           SALIENDO=true
           ;;
         *)
-          echo "Opción invalida, revise su elección."
+          error "Opción invalida, revise su elección."
           ;;
       esac
     done
