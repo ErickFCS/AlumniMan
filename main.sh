@@ -115,12 +115,10 @@ correr_proceso() {
 
 listar_alumnos() {
   sort -h $HOME/EPNro1/salida/$FILENAME
-  read -p "Presione enter para continuar."
 }
 
 listar_alumnos_con_notas_mas_altas() {
   sort --field-separator=" " --key=5,5nr $HOME/EPNro1/salida/$FILENAME | head -n 10
-  read -p "Presione enter para continuar."
 }
 
 buscar_por_padron() {
@@ -129,7 +127,6 @@ buscar_por_padron() {
   elif ! grep "^$numPadron " $HOME/EPNro1/salida/$FILENAME; then
     echo "El numero de padrón $numPadron no se encuentra registrado."
   fi
-  read -p "Presione enter para continuar."
 }
 
 case "$1" in
@@ -171,12 +168,14 @@ case "$1" in
             FILENAME_existe_y_no_esta_vacio; then
             listar_alumnos
           fi
+          read -p "Presione enter para continuar."
           ;;
         "4")
           if entorno_existe && \
             FILENAME_existe_y_no_esta_vacio; then
             listar_alumnos_con_notas_mas_altas
           fi
+          read -p "Presione enter para continuar."
           ;;
         "5")
           if entorno_existe && \
@@ -184,6 +183,7 @@ case "$1" in
             read -p "Ingrese su numero de padrón: " numPadron
             buscar_por_padron $numPadron
           fi
+          read -p "Presione enter para continuar."
           ;;
         "6")
           echo "Saliendo."
