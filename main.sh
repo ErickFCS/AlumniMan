@@ -154,7 +154,7 @@ case "$1" in
       read -p "Numero de opción elegida: " opt
 
       echo ""
-      echo "Opción $opt seleccionada."
+      echo "Opción \"$opt\" seleccionada."
       echo ""
 
       case "$opt" in
