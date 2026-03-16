@@ -49,7 +49,7 @@ MENSAJE_HELP='
         -h, --help  Muestra este mensaje y termina.
 '
 
-MENSAJE_ATENCION_CON_D='
+MENSAJE_ATENCION_ELIMINACION_DE_ENTORNO='
   ¡ATENCION!
   Usted esta por eliminar todo el entorno creado por esta herramienta.
   Esto no tiene vuelta atras. Solo continue si entiende las implicaciones.
@@ -75,7 +75,7 @@ MENSAJE_MENU='
   Termina el programa dejando todo el entorno y datos como están.
 '
 
-verificar_existencia_de_entorno() {
+entorno_existe() {
   if [[ !( -d $HOME/EPNro1 && -d $HOME/EPNro1/entrada && -d $HOME/EPNro1/salida && -d $HOME/EPNro1/procesado  ) ]]; then
     echo "Entorno corrupto o no iniciado. Intente correr primero la opción 1."
     echo "Si el problema persiste contacte con soporte."
@@ -84,7 +84,7 @@ verificar_existencia_de_entorno() {
   return 0
 }
 
-verificar_existencia_y_contenido_del_archivo_FILENAME() {
+FILENAME_existe_y_no_esta_vacio() {
   if [[ ! -s $HOME/EPNro1/salida/$FILENAME ]]; then
     echo "El archivo $FILENAME todavia no existe o esta vacio."
     return 1
@@ -134,17 +134,21 @@ buscar_por_padron() {
 
 if [[ $1 == "-h" || $1 == "--help" ]]; then
   echo "$MENSAJE_HELP"
+
 elif [[ $1 == "-d" ]]; then
-  echo "$MENSAJE_ATENCION_CON_D"
+  echo "$MENSAJE_ATENCION_ELIMINACION_DE_ENTORNO"
   read -p "Desea continuar? Solo \"si\" sera aceptado como afirmativo: " confirma
+
   if [[ $confirma == "si" ]]; then
     rm -fr $HOME/EPNro1/
     echo "El entorno fue eliminado."
     pkill -f consolidar.sh
     echo "Los procesos fueron terminados."
+
   else
     echo "La operacion fue cancelada."
   fi
+
 else
   while [[ $SALIENDO == false ]]; do
     echo "$MENSAJE_MENU"
@@ -157,25 +161,25 @@ else
         crear_entorno
         ;;
       "2")
-        if verificar_existencia_de_entorno; then
+        if entorno_existe; then
           correr_proceso
         fi
         ;;
       "3")
-        if verificar_existencia_de_entorno && \
-          verificar_existencia_y_contenido_del_archivo_FILENAME; then
+        if entorno_existe && \
+          FILENAME_existe_y_no_esta_vacio; then
           listar_alumnos
         fi
         ;;
       "4")
-        if verificar_existencia_de_entorno && \
-          verificar_existencia_y_contenido_del_archivo_FILENAME; then
+        if entorno_existe && \
+          FILENAME_existe_y_no_esta_vacio; then
           listar_alumnos_con_notas_mas_altas
         fi
         ;;
       "5")
-        if verificar_existencia_de_entorno && \
-          verificar_existencia_y_contenido_del_archivo_FILENAME; then
+        if entorno_existe && \
+          FILENAME_existe_y_no_esta_vacio; then
           read -p "Ingrese su numero de padrón: " numPadron
           buscar_por_padron $numPadron
         fi
