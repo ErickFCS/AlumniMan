@@ -8,10 +8,10 @@ CONSOLIDAR_SH='
 
 echo "Ejecución iniciada."
 
-for i in ~/EPNro1/entrada/*.txt; do
+for i in $HOME/EPNro1/entrada/*.txt; do
 if [[ -f "$i" ]]; then
-cat "$i" >> ~/EPNro1/salida/$FILENAME
-mv "$i" ~/EPNro1/procesado/
+cat "$i" >> $HOME/EPNro1/salida/$FILENAME
+mv "$i" $HOME/EPNro1/procesado/
 else
 echo "No hay archivos que procesar."
 fi
@@ -21,7 +21,7 @@ echo "Ejecución finalizada."
 '
 
 MENSAJE_HELP='
-  erick@desktop:~/Downloads/TP0$ busybox --help
+  erick@desktop:$HOME/Downloads/TP0$ busybox --help
   AlumniMan, made for Bash compliant shells.
   AlumniMan is copyrighted by ErickFCS.
   Licensed under BSD-3. See source distribution for detailed.
@@ -76,7 +76,7 @@ MENSAJE_MENU='
 '
 
 verificar_existencia_de_entorno() {
-  if [[ !( -d ~/EPNro1 && -d ~/EPNro1/entrada && -d ~/EPNro1/salida && -d ~/EPNro1/procesado  ) ]]; then
+  if [[ !( -d $HOME/EPNro1 && -d $HOME/EPNro1/entrada && -d $HOME/EPNro1/salida && -d $HOME/EPNro1/procesado  ) ]]; then
     echo "Entorno corrupto o no iniciado. Intente correr primero la opción 1."
     echo "Si el problema persiste contacte con soporte."
     return 1
@@ -85,7 +85,7 @@ verificar_existencia_de_entorno() {
 }
 
 verificar_existencia_y_contenido_del_archivo_FILENAME() {
-  if [[ ! -s ~/EPNro1/salida/$FILENAME ]]; then
+  if [[ ! -s $HOME/EPNro1/salida/$FILENAME ]]; then
     echo "El archivo $FILENAME todavia no existe o esta vacio."
     return 1
   fi
@@ -95,38 +95,38 @@ verificar_existencia_y_contenido_del_archivo_FILENAME() {
 crear_entorno() {
   echo "Creando la carpeta EPNro1 si no existe."
   echo "Creando la carpeta entrada si no existe."
-  mkdir -p ~/EPNro1/entrada
+  mkdir -p $HOME/EPNro1/entrada
   echo "Creando la carpeta salida si no existe."
-  mkdir -p ~/EPNro1/salida
+  mkdir -p $HOME/EPNro1/salida
   echo "Creando la carpeta procesado si no existe."
-  mkdir -p ~/EPNro1/procesado
+  mkdir -p $HOME/EPNro1/procesado
 }
 
 correr_proceso() {
-  if [[ ! -e ~/EPNro1/consolidar.sh ]]; then
+  if [[ ! -e $HOME/EPNro1/consolidar.sh ]]; then
     echo "El script consolidar.sh no se encuentra en la carpeta EPNro1."
     echo "Creando script consolidar.sh."
-    echo "$CONSOLIDAR_SH" > ~/EPNro1/consolidar.sh
-    chmod +x ~/EPNro1/consolidar.sh
+    echo "$CONSOLIDAR_SH" > $HOME/EPNro1/consolidar.sh
+    chmod +x $HOME/EPNro1/consolidar.sh
   fi
   echo "Ejecutando de fondo el script consolidar.sh."
-  FILENAME=$FILENAME ~/EPNro1/consolidar.sh &
+  FILENAME=$FILENAME $HOME/EPNro1/consolidar.sh &
 }
 
 listar_alumnos() {
-  sort -h ~/EPNro1/salida/$FILENAME
+  sort -h $HOME/EPNro1/salida/$FILENAME
   read -p "Presione enter para continuar."
 }
 
 listar_alumnos_con_notas_mas_altas() {
-  sort --field-separator=" " --key=5,5nr ~/EPNro1/salida/$FILENAME | head -n 10
+  sort --field-separator=" " --key=5,5nr $HOME/EPNro1/salida/$FILENAME | head -n 10
   read -p "Presione enter para continuar."
 }
 
 buscar_por_padron() {
   if [[ -z "$numPadron" ]]; then
     echo "No se ingreso ningún dato."
-  elif ! grep "^$numPadron " ~/EPNro1/salida/$FILENAME; then
+  elif ! grep "^$numPadron " $HOME/EPNro1/salida/$FILENAME; then
     echo "El numero de padrón $numPadron no se encuentra registrado."
   fi
   read -p "Presione enter para continuar."
@@ -138,7 +138,7 @@ elif [[ $1 == "-d" ]]; then
   echo "$MENSAJE_ATENCION_CON_D"
   read -p "Desea continuar? Solo \"si\" sera aceptado como afirmativo: " confirma
   if [[ $confirma == "si" ]]; then
-    rm -fr ~/EPNro1/
+    rm -fr $HOME/EPNro1/
     echo "El entorno fue eliminado."
     pkill -f consolidar.sh
     echo "Los procesos fueron terminados."
