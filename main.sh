@@ -9,6 +9,7 @@ verificar_existencia_de_entorno() {
     echo "Si el problema persiste contacte con soporte."
     return 1
   fi
+  return 0
 }
 
 verificar_existencia_y_contenido_del_archivo_FILENAME() {
@@ -16,6 +17,7 @@ verificar_existencia_y_contenido_del_archivo_FILENAME() {
     echo "El archivo $FILENAME todavia no existe o esta vacio."
     return 1
   fi
+  return 0
 }
 
 if [[ $1 == "-h" || $1 == "--help" ]]; then
