@@ -132,66 +132,67 @@ buscar_por_padron() {
   read -p "Presione enter para continuar."
 }
 
-if [[ $1 == "-h" || $1 == "--help" ]]; then
-  echo "$MENSAJE_HELP"
+case "$1" in
+  "-h" | "--help")
+    echo "$MENSAJE_HELP"
+    ;;
+  "-d" | "--destroy")
+    echo "$MENSAJE_ATENCION_ELIMINACION_DE_ENTORNO"
+    read -p "Desea continuar? Solo \"si\" sera aceptado como afirmativo: " confirma
 
-elif [[ $1 == "-d" ]]; then
-  echo "$MENSAJE_ATENCION_ELIMINACION_DE_ENTORNO"
-  read -p "Desea continuar? Solo \"si\" sera aceptado como afirmativo: " confirma
+    if [[ $confirma == "si" ]]; then
+      rm -fr $HOME/EPNro1/
+      echo "El entorno fue eliminado."
+      pkill -f consolidar.sh
+      echo "Los procesos fueron terminados."
 
-  if [[ $confirma == "si" ]]; then
-    rm -fr $HOME/EPNro1/
-    echo "El entorno fue eliminado."
-    pkill -f consolidar.sh
-    echo "Los procesos fueron terminados."
+    else
+      echo "La operacion fue cancelada."
+    fi
+    ;;
+  *)
+    while [[ $SALIENDO == false ]]; do
+      echo "$MENSAJE_MENU"
+      read -p "Numero de opción elegida: " opt
 
-  else
-    echo "La operacion fue cancelada."
-  fi
+      echo "Opción $opt seleccionada."
 
-else
-  while [[ $SALIENDO == false ]]; do
-    echo "$MENSAJE_MENU"
-    read -p "Numero de opción elegida: " opt
-
-    echo "Opción $opt seleccionada."
-
-    case "$opt" in
-      "1")
-        crear_entorno
-        ;;
-      "2")
-        if entorno_existe; then
-          correr_proceso
-        fi
-        ;;
-      "3")
-        if entorno_existe && \
-          FILENAME_existe_y_no_esta_vacio; then
-          listar_alumnos
-        fi
-        ;;
-      "4")
-        if entorno_existe && \
-          FILENAME_existe_y_no_esta_vacio; then
-          listar_alumnos_con_notas_mas_altas
-        fi
-        ;;
-      "5")
-        if entorno_existe && \
-          FILENAME_existe_y_no_esta_vacio; then
-          read -p "Ingrese su numero de padrón: " numPadron
-          buscar_por_padron $numPadron
-        fi
-        ;;
-      "6")
-        echo "Saliendo."
-        SALIENDO=true
-        ;;
-      *)
-        echo "Opción invalida, revise su elección."
-        ;;
-    esac
-
-  done
-fi
+      case "$opt" in
+        "1")
+          crear_entorno
+          ;;
+        "2")
+          if entorno_existe; then
+            correr_proceso
+          fi
+          ;;
+        "3")
+          if entorno_existe && \
+            FILENAME_existe_y_no_esta_vacio; then
+            listar_alumnos
+          fi
+          ;;
+        "4")
+          if entorno_existe && \
+            FILENAME_existe_y_no_esta_vacio; then
+            listar_alumnos_con_notas_mas_altas
+          fi
+          ;;
+        "5")
+          if entorno_existe && \
+            FILENAME_existe_y_no_esta_vacio; then
+            read -p "Ingrese su numero de padrón: " numPadron
+            buscar_por_padron $numPadron
+          fi
+          ;;
+        "6")
+          echo "Saliendo."
+          SALIENDO=true
+          ;;
+        *)
+          echo "Opción invalida, revise su elección."
+          ;;
+      esac
+    done
+    ;;
+esac
