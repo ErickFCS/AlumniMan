@@ -6,18 +6,15 @@ SALIENDO=false
 CONSOLIDAR_SH='
 #!/bin/bash
 
-echo "Ejecución iniciada."
-
-for i in $HOME/EPNro1/entrada/*.txt; do
-if [[ -f "$i" ]]; then
-cat "$i" >> $HOME/EPNro1/salida/$FILENAME
-mv "$i" $HOME/EPNro1/procesado/
-else
-echo "No hay archivos que procesar."
-fi
+while true; do
+  for i in $HOME/EPNro1/entrada/*.txt; do
+    if [[ -f "$i" ]] && ! fuser -s "$i"; then
+      cat "$i" >> $HOME/EPNro1/salida/$FILENAME
+      mv "$i" $HOME/EPNro1/procesado/
+    fi
+  done
+  sleep 5
 done
-
-echo "Ejecución finalizada."
 '
 
 MENSAJE_HELP='
@@ -107,7 +104,8 @@ FILENAME_existe_y_no_esta_vacio() {
     error "El archivo $FILENAME todavia no existe o esta vacio."
     warn 'Asegúrece de:
     haber creado el entorno con la opción 1
-    haber agregado archivos a la carpeta entrada y luego haberlos procesado con la opción 2'
+    haber agregado archivos a la carpeta entrada
+    haber iniciado el processo de fondo con la opción 2'
     warn "En caso de que el problema persista, contacte con soporte."
     return 1
   fi
@@ -135,7 +133,8 @@ correr_proceso() {
     success "Script consolidar.sh creado"
   fi
   echo "Ejecutando de fondo el script consolidar.sh."
-  FILENAME=$FILENAME $HOME/EPNro1/consolidar.sh &
+  nohup bash -c "FILENAME=$FILENAME $HOME/EPNro1/consolidar.sh" > /dev/null 2>&1 &
+  success "Proceso de fondo iniciado"
 }
 
 listar_alumnos() {
