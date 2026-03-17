@@ -147,9 +147,9 @@ listar_alumnos_con_notas_mas_altas() {
 }
 
 buscar_por_padron() {
-  if [[ -z "$numPadron" ]]; then
+  if [[ -z "$1" ]]; then
     error "No se ingreso ningún dato."
-  elif ! grep "^$numPadron " $HOME/EPNro1/salida/$FILENAME; then
+  elif ! grep "^$1 " $HOME/EPNro1/salida/$FILENAME; then
     error "El numero de padrón $numPadron no se encuentra registrado."
   fi
 }
