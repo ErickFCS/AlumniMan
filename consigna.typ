@@ -44,7 +44,7 @@ El script debe interactuar con una variable de entorno llamada `FILENAME` para d
 
 + *Correr proceso:*
   Ejecuta en segundo plano (`background`) el script `consolidar.sh` ubicado en `EPNro1`.
-  - *Lógica:* Concatena el contenido de cada archivo en `entrada/` al final de `salida/$FILENAME.txt`.
+  - *Lógica:* Concatena el contenido de cada archivo que entra en `entrada/` al final de `salida/$FILENAME.txt`.
   - *Post-procesamiento:* Tras la consolidación, mueve los archivos originales a `procesado/`.
 
 + *Listar alumnos:*
