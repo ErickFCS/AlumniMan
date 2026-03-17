@@ -176,7 +176,7 @@ case "$1" in
   *)
     while [[ $SALIENDO == false ]]; do
       echo "$MENSAJE_MENU"
-      CANTIDAD_DE_PROCESOS=$(($(ps aux | grep "consolidar.sh" | wc -l) - 1))
+      CANTIDAD_DE_PROCESOS=$(pgrep -fc "consolidar.sh")
       success "Hay $CANTIDAD_DE_PROCESOS procesos activos"
       echo ""
       read -p "Numero de opción elegida: " opt
