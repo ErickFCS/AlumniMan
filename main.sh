@@ -130,11 +130,15 @@ correr_proceso() {
     echo "Creando script consolidar.sh."
     echo "$CONSOLIDAR_SH" > $HOME/EPNro1/consolidar.sh
     chmod +x $HOME/EPNro1/consolidar.sh
-    success "Script consolidar.sh creado"
+    success "Script consolidar.sh creado."
   fi
-  echo "Ejecutando de fondo el script consolidar.sh."
-  nohup bash -c "FILENAME=$FILENAME $HOME/EPNro1/consolidar.sh" > /dev/null 2>&1 &
-  success "Proceso de fondo iniciado"
+  if ! pgrep -f "consolidar.sh" > /dev/null 2>&1; then
+    echo "Ejecutando de fondo el script consolidar.sh."
+    nohup bash -c "FILENAME=$FILENAME $HOME/EPNro1/consolidar.sh" > /dev/null 2>&1 &
+    success "Proceso de fondo iniciado."
+  else 
+    warn "Ya hay un proceso iniciado."
+  fi
 }
 
 listar_alumnos() {
