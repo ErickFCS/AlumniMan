@@ -89,12 +89,6 @@ error() {
   echo -e "\x1b[91m$1\x1b[0m"
 }
 
-if [[ -z "$FILENAME" ]]; then
-  warn "La variable de entorno FILENAME no fue definida o esta vacía."
-  warn "El valor \"Alumnos.txt\" sera usado."
-  FILENAME=${FILENAME:-"Alumnos.txt"}
-fi
-
 entorno_existe() {
   if [[ !( -d $HOME/EPNro1 && -d $HOME/EPNro1/entrada && -d $HOME/EPNro1/salida && -d $HOME/EPNro1/procesado  ) ]]; then
     error "Entorno corrupto o no iniciado. Intente correr primero la opción 1."
@@ -182,6 +176,11 @@ case "$1" in
     fi
     ;;
   *)
+    if [[ -z "$FILENAME" ]]; then
+        warn "La variable de entorno FILENAME no fue definida o esta vacía."
+          warn "El valor \"Alumnos.txt\" sera usado."
+            FILENAME=${FILENAME:-"Alumnos.txt"}
+    fi
     while [[ $SALIENDO == false ]]; do
       echo "$MENSAJE_MENU"
       CANTIDAD_DE_PROCESOS=$(pgrep -fc "consolidar.sh")
