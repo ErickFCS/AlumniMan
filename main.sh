@@ -105,9 +105,9 @@ entorno_existe() {
 FILENAME_existe_y_no_esta_vacio() {
   if [[ ! -s $HOME/EPNro1/salida/$FILENAME ]]; then
     error "El archivo $FILENAME todavia no existe o esta vacio."
-    warn 'Asegurece de:
+    warn 'Asegúrece de:
     haber creado el entorno con la opción 1
-    haber agregado archivos a la carpeta entrada y luego haberlos procesados con la opción 2'
+    haber agregado archivos a la carpeta entrada y luego haberlos procesado con la opción 2'
     warn "En caso de que el problema persista, contacte con soporte."
     return 1
   fi
