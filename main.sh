@@ -1,6 +1,5 @@
 #!/bin/bash
 
-FILENAME=${FILENAME:-"numbredearchivo.txt"}
 SALIENDO=false
 
 CONSOLIDAR_SH='
@@ -89,6 +88,12 @@ error() {
   # \x1b[0m es el código ansii para volver al default.
   echo -e "\x1b[91m$1\x1b[0m"
 }
+
+if [[ -z "$FILENAME" ]]; then
+  warn "La variable de entorno FILENAME no fue definida o esta vacía."
+  warn "El valor \"Alumnos.txt\" sera usado."
+  FILENAME=${FILENAME:-"Alumnos.txt"}
+fi
 
 entorno_existe() {
   if [[ !( -d $HOME/EPNro1 && -d $HOME/EPNro1/entrada && -d $HOME/EPNro1/salida && -d $HOME/EPNro1/procesado  ) ]]; then
