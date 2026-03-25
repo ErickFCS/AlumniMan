@@ -17,7 +17,6 @@ done
 '
 
 MENSAJE_HELP='
-  erick@desktop:$HOME/Downloads/TP0$ busybox --help
   AlumniMan, made for Bash compliant shells.
   AlumniMan is copyrighted by ErickFCS.
   Licensed under BSD-3. See source distribution for detailed.
